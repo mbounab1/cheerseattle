@@ -1,0 +1,48 @@
+﻿@model todo.Models.Attendance
+
+<h2>Attendance Details For: @Html.DisplayFor(model => model.Name) </h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Present)
+        </dt>
+
+        <dd>
+            @String.Join(" , ", Model.Present)
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Absent)
+        </dt>
+
+        <dd>
+           @String.Join(" , ", Model.Absent)
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Late)
+        </dt>
+
+        <dd>
+            @String.Join(" , ", Model.Late)
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Unexcused)
+        </dt>
+
+        <dd>
+            @String.Join(" , ", Model.Unexcused)
+
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

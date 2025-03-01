@@ -16,7 +16,13 @@
         [ActionName("Index")]
         public async Task<IActionResult> Index()
         {
-            return View(await _cosmosDbService.GetItemsAsync("SELECT * FROM c"));
+            return View(await _cosmosDbService.GetItemsAsync("SELECT * FROM c ORDER BY c.Name Asc"));
+        }
+
+        [ActionName("Attendance")]
+        public IActionResult Attendance(Attendance attendanceRecord)
+        {
+            return View(attendanceRecord);
         }
 
         [ActionName("Create")]

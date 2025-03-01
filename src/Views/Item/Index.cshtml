@@ -25,13 +25,7 @@
             @Html.DisplayNameFor(model => model.FinancialContribution)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Attendance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Attendance)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Attendance)
+            @Html.DisplayNameFor(model => model.EventCredits)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Attendance)
@@ -57,129 +51,15 @@
             @Html.DisplayFor(modelItem => item.FinancialContribution)
         </td>
         <td>
-                <style>
-                    .dropdown {
-                        cursor: pointer;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        width: 100px;
-                        text-align: center;
-                    }
-
-                    .dropdown-content {
-                        display: none;
-                        border: 1px solid #ccc;
-                        margin-top: 5px;
-                        padding: 10px;
-                    }
-                </style>
-                <div class="dropdown" onclick="toggleDropdown('dropdownContentPresent')">Present (Click to Expand)</div>
-            <div class="dropdown-content" id="dropdownContentPresent" style.dis>                
-                @foreach (var record in item.Attendance.Present)
-                {
-                    @record
-                    <br />
-                }
-            </div>
-                
+            @Html.DisplayFor(modelItem => item.EventCredits)
         </td>
-            <td>
-                <style>
-                    .dropdown {
-                        cursor: pointer;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        width: 100px;
-                        text-align: center;
-                    }
-
-                    .dropdown-content {
-                        display: none;
-                        border: 1px solid #ccc;
-                        margin-top: 5px;
-                        padding: 10px;
-                    }
-                </style>
-                <div class="dropdown" onclick="toggleDropdown('dropdownContentAbsent')">Absent (Click to Expand)</div>
-                <div class="dropdown-content" id="dropdownContentAbsent" style.dis>
-                    @foreach (var record in item.Attendance.Absent)
-                    {
-                        @record
-                        <br />
-                    }
-                </div>
-            </td>
-            <td>
-                <style>
-                    .dropdown {
-                        cursor: pointer;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        width: 100px;
-                        text-align: center;
-                    }
-
-                    .dropdown-content {
-                        display: none;
-                        border: 1px solid #ccc;
-                        margin-top: 5px;
-                        padding: 10px;
-                    }
-                </style>
-                <div class="dropdown" onclick="toggleDropdown('dropdownContentLate')">Late (Click to Expand)</div>
-                <div class="dropdown-content" id="dropdownContentLate" style.dis>
-                    @foreach (var record in item.Attendance.Late)
-                    {
-                        @record
-                        <br />
-                    }
-                </div>
-        </td>
-            <td>
-                <style>
-                    .dropdown {
-                        cursor: pointer;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        width: 100px;
-                        text-align: center;
-                    }
-
-                    .dropdown-content {
-                        display: none;
-                        border: 1px solid #ccc;
-                        margin-top: 5px;
-                        padding: 10px;
-                    }
-                </style>
-                <div class="dropdown" onclick="toggleDropdown('dropdownContentUnexcused')">Unexcused (Click to Expand)</div>
-                <div class="dropdown-content" id="dropdownContentUnexcused" style.dis>
-                    @foreach (var record in item.Attendance.Unexcused)
-                    {
-                        @record
-                        <br />
-                    }
-                </div>
-            </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Attendance", "Attendance", new {item.Name, item.Attendance.Present, item.Attendance.Absent, item.Attendance.Late, item.Attendance.Unexcused})
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
         </td>
     </tr>
 }
     
 </table>
-<script>
-    function toggleDropdown(id) {
-        var content = document.getElementById(id);
-        if (content.style.display === "none" || content.style.display === "") {
-            content.style.display = "block";
-        } else {
-            content.style.display = "none";
-        }
-    }
-</script>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
