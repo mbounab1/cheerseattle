@@ -4,13 +4,22 @@
     ViewBag.Title = "Full List of Volunteers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using (Html.BeginForm("Upload", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="file" name="file" />
+    <input type="submit" value="Upload" />
+}
 
 <h2>Full List of Volunteers</h2>
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Pronouns)
@@ -36,8 +45,11 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => item.FirstName)
         </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
         <td>
             @Html.DisplayFor(modelItem => item.Pronouns)
         </td>
@@ -54,7 +66,7 @@
             @Html.DisplayFor(modelItem => item.EventCredits)
         </td>
         <td>
-            @Html.ActionLink("Attendance", "Attendance", new {item.Name, item.Attendance.Present, item.Attendance.Absent, item.Attendance.Late, item.Attendance.Unexcused})
+            @Html.ActionLink("Attendance", "Attendance", new {item.FirstName, item.Attendance.Present, item.Attendance.Absent, item.Attendance.Late, item.Attendance.Unexcused})
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id })
