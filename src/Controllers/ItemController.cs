@@ -20,6 +20,8 @@
     using Microsoft.Office.Interop.Excel;
     using Application = Microsoft.Office.Interop.Excel.Application;
     using System.Collections.Generic;
+    using Microsoft.Azure.Cosmos.Linq;
+    using System.Web.WebPages;
 
     public class ItemController : Controller
     {
@@ -90,7 +92,7 @@
                 ViewBag.Message = ex.Message;
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -189,6 +191,8 @@
                         var firstName = name[0];
                         var lastName = name[1];
 
+                        Console.WriteLine(status + " " + firstName + " " + lastName);
+
                         attendanceRecord.Add((firstName, lastName), status);
                     }
                     Record(attendanceRecord);
@@ -200,8 +204,40 @@
             }
         }
 
-        private void Record(Dictionary<(string, string), string> record)
+        private async void Record(Dictionary<(string, string), string> rsvpRecord)
         {
+            var today = "2025-03-05";
+            var allVolunteers = await _cosmosDbService.GetItemsAsync("SELECT * FROM c ORDER BY c.Name Asc");
+            foreach (var volunteer in allVolunteers)
+            {
+                var status = rsvpRecord.GetValueOrDefault((volunteer.FirstName, volunteer.LastName));
+                if (string.IsNullOrWhiteSpace(status))
+                {
+                    volunteer.Attendance.Unexcused.Add(today);
+                }
+                else if (status == RsvpStatus.Join)
+                {
+                    volunteer.Attendance.Present.Add(today);
+                }
+                else if (status == RsvpStatus.Decline)
+                {
+                    volunteer.Attendance.Absent.Add(today);
+                }
+                else if (status == RsvpStatus.Late)
+                {
+                    volunteer.Attendance.Late.Add(today);
+                }
+
+                try
+                {
+                    Console.WriteLine(volunteer.Name);
+                    await _cosmosDbService.UpdateItemAsync(volunteer.Name.Trim(), volunteer);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
         }
     }
 }

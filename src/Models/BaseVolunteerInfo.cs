@@ -13,6 +13,15 @@
         [JsonProperty(PropertyName = "lastName")]
         public string LastName { get; set; }
 
+        [JsonProperty(PropertyName = "Name")]
+        public string Name
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
+        }
+
         [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
 
