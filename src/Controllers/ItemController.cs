@@ -92,7 +92,7 @@
                 ViewBag.Message = ex.Message;
             }
 
-            return RedirectToAction("Index");
+            return View();
         }
 
         [HttpPost]
@@ -206,7 +206,7 @@
 
         private async void Record(Dictionary<(string, string), string> rsvpRecord)
         {
-            var today = "2025-03-05";
+            var today = DateTimeOffset.Now.Date.ToString();
             var allVolunteers = await _cosmosDbService.GetItemsAsync("SELECT * FROM c ORDER BY c.Name Asc");
             foreach (var volunteer in allVolunteers)
             {
