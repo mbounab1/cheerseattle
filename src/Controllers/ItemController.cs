@@ -60,7 +60,7 @@
                 if (file != null && file.Length > 0)
                 {
                     string fileExtension = Path.GetExtension(file.FileName);
-                    string[] allowedExtensions = { ".xlsx", ".csv" };
+                    string[] allowedExtensions = { ".csv" };
 
                     if (allowedExtensions.Contains(fileExtension))
                     {
@@ -78,7 +78,7 @@
                     }
                     else
                     {
-                        ViewBag.Message = "Only pdf, doc and docx files are allowed.";
+                        ViewBag.Message = "Only .csv files are allowed.";
                     }
                 }
                 else
@@ -195,8 +195,8 @@
 
                         attendanceRecord.Add((firstName, lastName), status);
                     }
-                    Record(attendanceRecord);
                 }
+                Record(attendanceRecord);
             }
             catch (Exception ex)
             {
@@ -206,32 +206,33 @@
 
         private async void Record(Dictionary<(string, string), string> rsvpRecord)
         {
-            var today = DateTimeOffset.Now.Date.ToString();
+            var today = DateTimeOffset.Now.Date;
+            var todayDate = new DateOnly(today.Year, today.Month, today.Day).ToString();
             var allVolunteers = await _cosmosDbService.GetItemsAsync("SELECT * FROM c ORDER BY c.Name Asc");
             foreach (var volunteer in allVolunteers)
             {
                 var status = rsvpRecord.GetValueOrDefault((volunteer.FirstName, volunteer.LastName));
                 if (string.IsNullOrWhiteSpace(status))
                 {
-                    volunteer.Attendance.Unexcused.Add(today);
+                    volunteer.Attendance.Unexcused.Add(todayDate);
                 }
                 else if (status == RsvpStatus.Join)
                 {
-                    volunteer.Attendance.Present.Add(today);
+                    volunteer.Attendance.Present.Add(todayDate);
                 }
                 else if (status == RsvpStatus.Decline)
                 {
-                    volunteer.Attendance.Absent.Add(today);
+                    volunteer.Attendance.Absent.Add(todayDate);
                 }
                 else if (status == RsvpStatus.Late)
                 {
-                    volunteer.Attendance.Late.Add(today);
+                    volunteer.Attendance.Late.Add(todayDate);
                 }
 
                 try
                 {
                     Console.WriteLine(volunteer.Name);
-                    await _cosmosDbService.UpdateItemAsync(volunteer.Name.Trim(), volunteer);
+                    await _cosmosDbService.UpdateItemAsync(volunteer.Name, volunteer);
                 }
                 catch (Exception ex)
                 {
