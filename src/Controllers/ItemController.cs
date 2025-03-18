@@ -7,21 +7,9 @@
     using Microsoft.AspNetCore.Mvc;
     using todo.Models;
 
-    using System;
-    using System.IO;
-
-    using System.Web;
-    using System.Web.Mvc;
-
-    using System.Web;
-
     using Microsoft.AspNetCore.Http;
-    using static System.Net.Mime.MediaTypeNames;
-    using Microsoft.Office.Interop.Excel;
-    using Application = Microsoft.Office.Interop.Excel.Application;
     using System.Collections.Generic;
-    using Microsoft.Azure.Cosmos.Linq;
-    using System.Web.WebPages;
+    using todo.Services;
 
     public class ItemController : Controller
     {
@@ -36,6 +24,24 @@
         public async Task<IActionResult> Index()
         {
             return View(await _cosmosDbService.GetItemsAsync("SELECT * FROM c ORDER BY c.Name Asc"));
+        }
+
+        [ActionName("Login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public String ProcessNewOrder()
+        {
+            return "order received";
+        }
+
+        [ActionName("Home")]
+        public IActionResult Home()
+        {
+            return View();
         }
 
         [ActionName("Attendance")]
@@ -233,6 +239,12 @@
                 {
                     Console.WriteLine(volunteer.Name);
                     await _cosmosDbService.UpdateItemAsync(volunteer.Name, volunteer);
+                    var absences = volunteer.Attendance.Absent.Count + volunteer.Attendance.Unexcused.Count;
+                    if (absences > 4)
+                    {
+                        EmailAlerting messanger = new();
+                        messanger.SendEmail(volunteer.Name, absences);
+                    }
                 }
                 catch (Exception ex)
                 {

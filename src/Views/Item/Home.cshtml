@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button1 {
+            background-color: #04AA6D;
+        }
+
+        .button1:hover {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* Green */
+        .button2 {
+            background-color: #008CBA;
+        }
+
+        .button2:hover {
+            background-color: #008CBA;
+            color: white;
+        }
+        /* Blue */
+    </style>
+</head>
+<body>
+    <h2>Cheer Seattle Volunteer Portal</h2>
+
+    <button class="button button1" onclick="location.href='/Item/Login'">Login</button>
+    <button class="button button2" onclick="location.href='/Item/SignUp'">Sign Up</button>
+
+</body>
+</html>

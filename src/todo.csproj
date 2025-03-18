@@ -7,9 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.13.2" />
+    <PackageReference Include="MailKit" Version="4.11.0" />
     <PackageReference Include="Microsoft.AspNet.WebHelpers" Version="3.3.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.47.1" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+    <PackageReference Include="MimeKit" Version="4.11.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

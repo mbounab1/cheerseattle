@@ -18,13 +18,14 @@
 
         public IConfiguration Configuration { get; }
 
-        // <ConfigureServices> 
+        // <ConfigureServices>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
         }
-        // </ConfigureServices> 
+
+        // </ConfigureServices>
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,13 +51,13 @@
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Item}/{action=Index}/{id?}");
+                    pattern: "{controller=Item}/{action=Home}");
             });
         }
 
         // <InitializeCosmosClientInstanceAsync>
         /// <summary>
-        /// Creates a Cosmos DB database and a container with the specified partition key. 
+        /// Creates a Cosmos DB database and a container with the specified partition key.
         /// </summary>
         /// <returns></returns>
         private static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
@@ -78,13 +79,14 @@
             {
                 client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             }
-            
+
             CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
             Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/Name");
 
             return cosmosDbService;
         }
+
         // </InitializeCosmosClientInstanceAsync>
     }
 }
